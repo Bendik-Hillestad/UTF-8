@@ -44,11 +44,11 @@ namespace bkh::encoding
 {
     namespace detail
     {
-		/* Workaround for GCC and Clang */
+        /* Workaround for GCC and Clang */
 
         template<typename T>
         struct dependent_false : std::false_type{};
-		
+
         /* Feature tests */
 
         //Test if there's an inequality comparison operator that accepts const references
@@ -199,8 +199,8 @@ namespace bkh::encoding
 
         static inline struct alignas(512) _lookup
         {
-			_lookup(){}; //Workaround for bug in Clang and GCC
-			
+            _lookup(){}; //Workaround for bug in Clang and GCC
+
             struct { uint8_t code_point; dfa_state_t state; } initial_state[62]
             {
                 { 0x02, CS1 }, { 0x03, CS1 }, { 0x04, CS1 }, { 0x05, CS1 },
