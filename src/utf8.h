@@ -55,11 +55,11 @@ namespace bkh::encoding
         template<typename Lhs, typename Rhs>
         static auto is_inequality_comparable(Lhs const& lhs, Rhs const& rhs) -> decltype(lhs != rhs, std::true_type{});
         static auto is_inequality_comparable(...)                            -> std::false_type;
-		
-		//Test if we can advance the iterator
-		template<typename It>
-		static auto is_advanceable(It iterator) 							 -> decltype(++iterator, std::true_type{});
-		static auto is_advanceable(...) 									 -> std::false_type;
+
+        //Test if we can advance the iterator
+        template<typename It>
+        static auto is_advanceable(It iterator)                              -> decltype(++iterator, std::true_type{});
+        static auto is_advanceable(...)                                      -> std::false_type;
 
         //Test if we can dereference the iterator
         template<typename InputIt>
@@ -84,17 +84,17 @@ namespace bkh::encoding
             } 
             else static_assert(dependent_false<InputIt>{}, "'input' and 'end' must be comparable");
         }
-		
-		//Advances an iterator
-		template<typename It>
-		inline void advance(It& iterator) noexcept(true /* TODO */)
-		{
-			if constexpr(decltype(is_advanceable(iterator)){})
-			{
-				++iterator;
-			}
-			else static_assert(dependent_false<It>{}, "'iterator' must be advanceable");
-		}
+
+        //Advances an iterator
+        template<typename It>
+        inline void advance(It& iterator) noexcept(true /* TODO */)
+        {
+            if constexpr(decltype(is_advanceable(iterator)){})
+            {
+                ++iterator;
+            }
+            else static_assert(dependent_false<It>{}, "'iterator' must be advanceable");
+        }
 
         //Reads an octet from the input
         template<typename InputIt>
@@ -149,9 +149,9 @@ namespace bkh::encoding
                 //Check for ASCII
                 if (octet < 0x80)
                 {
-					//Write the code point and advance
+                    //Write the code point and advance
                     detail::write  (output, static_cast<char32_t>(octet));
-					detail::advance(output);
+                    detail::advance(output);
                 }
                 else
                 {
@@ -165,9 +165,9 @@ namespace bkh::encoding
                     //Continue until we hit either an accepting state or error state
                     while (state > ERR)
                     {
-						//Advance the input iterator
-						detail::advance(input);
-						
+                        //Advance the input iterator
+                        detail::advance(input);
+
                         //Check if we may continue
                         if (detail::check(input, end))
                         {
@@ -189,11 +189,11 @@ namespace bkh::encoding
 
                     //Write the code point and advance
                     detail::write  (output, code_point);
-					detail::advance(output);
+                    detail::advance(output);
                 }
-				
-				//Advance the input iterator
-				detail::advance(input);
+
+                //Advance the input iterator
+                detail::advance(input);
             }
 
             return end;
@@ -277,9 +277,9 @@ namespace bkh::encoding
             uint8_t pad[24]{};
         } const lookup;
     };
-	
-	//Workaround for GCC/Clang
-	utf8::_lookup const utf8::lookup{};
+
+    //Workaround for GCC/Clang
+    utf8::_lookup const utf8::lookup{};
 };
 
 #endif
