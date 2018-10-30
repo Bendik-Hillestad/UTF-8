@@ -219,11 +219,9 @@ namespace bkh::encoding
             P4B =  96, END = BGN
         };
 
-        static inline struct alignas(512) _lookup
+        static struct alignas(512) _lookup
         {
-            _lookup(){}; //Workaround for bug in Clang and GCC
-
-            struct { uint8_t code_point; dfa_state_t state; } initial_state[62]
+            struct { uint8_t code_point; dfa_state_t state; } const initial_state[62]
             {
                 { 0x02, CS1 }, { 0x03, CS1 }, { 0x04, CS1 }, { 0x05, CS1 },
                 { 0x06, CS1 }, { 0x07, CS1 }, { 0x08, CS1 }, { 0x09, CS1 },
@@ -243,7 +241,7 @@ namespace bkh::encoding
                 { 0xFE, ERR }, { 0xFF, ERR }
             };
 
-            character_class_t octet_category[256]
+            character_class_t const octet_category[256]
             {
                 ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC,
                 ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC,
@@ -263,7 +261,7 @@ namespace bkh::encoding
                 L4A, L4B, L4B, L4B, L4C, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL,
             };
 
-            dfa_state_t state_transition[108]
+            dfa_state_t const state_transition[108]
             {
                 ERR, END, ERR, ERR, ERR, CS1, P3A, CS2, P3B, P4A, CS3, P4B,
                 ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR,
@@ -277,8 +275,11 @@ namespace bkh::encoding
             };
 
             uint8_t pad[24]{};
-        } const lookup{};
+        } const lookup;
     };
+	
+	//Workaround for GCC/Clang
+	utf8::_lookup const utf8::lookup{};
 };
 
 #endif
